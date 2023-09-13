@@ -23,10 +23,10 @@
                         </div>
                         <p class="card-text">$0/month</p>
                         <ul class="list-group">
-                            <p >10 users included</p>
-                            <p >2 GB of storage</p>
-                            <p >Email support</p>
-                            <p >Help center access</p>
+                            <p>10 users included</p>
+                            <p>2 GB of storage</p>
+                            <p>Email support</p>
+                            <p>Help center access</p>
                         </ul>
                         <button class="btn pricing-button" id="1" data-bs-toggle="modal" data-bs-target="#modalForm1">Sign up for free</button>
                     </div>
@@ -41,10 +41,10 @@
                         </div>
                         <p class="card-text">$15/month</p>
                         <ul class="list-group">
-                            <p >20 users included</p>
-                            <p >10 GB of storage</p>
-                            <p >Priority email support</p>
-                            <p >Help center access</p>
+                            <p>20 users included</p>
+                            <p>10 GB of storage</p>
+                            <p>Priority email support</p>
+                            <p>Help center access</p>
                         </ul>
                         <button class="btn pricing-button" id="2" data-bs-toggle="modal" data-bs-target="#modalForm1">Get started</button>
                     </div>
@@ -59,10 +59,10 @@
                         </div>
                         <p class="card-text">$29/month</p>
                         <ul class="list-group">
-                            <p >30 users included</p>
-                            <p >15 GB of storage</p>
-                            <p >Phone and email support</p>
-                            <p >Help center access</p>
+                            <p>30 users included</p>
+                            <p>15 GB of storage</p>
+                            <p>Phone and email support</p>
+                            <p>Help center access</p>
                         </ul>
                         <button class="btn pricing-button" id="3" data-bs-toggle="modal" data-bs-target="#modalForm1">Contact us</button>
                     </div>
@@ -74,7 +74,8 @@
 
     <!-- Modals -->
     <!-- Modal 1 -->
-    <div class="modal fade" id="modalForm1" tabindex="-1" role="dialog" aria-labelledby="modalFormLabel1" aria-hidden="true">
+    <div class="modal fade" id="modalForm1" tabindex="-1" role="dialog" aria-labelledby="modalFormLabel1"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <!-- Modal content for Free -->
@@ -85,19 +86,19 @@
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
-                            <label for="name1" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name1" placeholder="Enter your name">
+                            <label for="firstname" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="firstname" placeholder="Enter your name">
                         </div>
                         <div class="mb-3">
-                            <label for="email1" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email1" placeholder="Enter your email">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email">
                         </div>
                         <div class="mb-3">
-                            <label for="comments1" class="form-label">Order Comments</label>
-                            <textarea class="form-control" id="comments1" rows="3" placeholder="Enter your comments"></textarea>
+                            <label for="message" class="form-label">Order Comments</label>
+                            <textarea class="form-control" id="message" rows="3" placeholder="Enter your comments"></textarea>
                         </div>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Submit</button>
+                        <button type="button" id="submitBtn" class="btn btn-primary">Submit</button>
                     </form>
                 </div>
             </div>
@@ -176,8 +177,8 @@
                     </div>
                 `;
 
-                    cardContainer.appendChild(card);
-                });
+                cardContainer.appendChild(card);
+            });
             }
 
         // Add an event listener to the slider's input event
@@ -195,6 +196,47 @@
             updateButtonColor(sliderValue);
         });
 
+                document.addEventListener("DOMContentLoaded", function () {
+                    const form = document.querySelector(".modal-body form");
+                    const submitBtn = document.getElementById("submitBtn");
+                    const responseDiv = document.getElementById("response");
+
+                    submitBtn.addEventListener("click", function () {
+                        const name = document.getElementById("firstname").value;
+                        const email = document.getElementById("email").value;
+                        const comments = document.getElementById("message").value;
+                        const accessCode = "O0AR1C4AMNBQ99QZ600HFYRTR";
+
+                        // Create a data object with the form values
+                        const data = {
+                            name: name,
+                            email: email,
+                            comments: comments
+                        };
+
+                        console.log('Data to sent', data);
+
+                        fetch("https://forms.maakeetoo.com/formapi/399", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Code": accessCode
+                            },
+                            body: JSON.stringify(data)
+                        })
+                            .then(response => response.json())
+                            .then(result => {
+                                // Handle the API response here
+                                console.log("API Response: " + JSON.stringify(result));
+                            })
+                            .catch(error => {
+                                // Handle any errors that occur during the fetch
+                                console.error("Error: " + error.message)
+                            });
+                    });
+                });
+            
+
             // Initial update of button color and user data
             updateButtonColor(0);
             fetchDataAndUpdateUserData(10); // Initial fetch with size 10
@@ -202,11 +244,3 @@
 </body>
 
 </html>
-
-
-
-
-
-    
-      
-      
