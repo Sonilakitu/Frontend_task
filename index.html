@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <!-- For Pricing card -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card pricing-card">
+                    <div class="card-body">
+                        <div class="card-title-head">
+                            <h5 class="card-title">Free</h5>
+                        </div>
+                        <p class="card-text">$0/month</p>
+                        <ul class="list-group">
+                            <p >10 users included</p>
+                            <p >2 GB of storage</p>
+                            <p >Email support</p>
+                            <p >Help center access</p>
+                        </ul>
+                        <button class="btn pricing-button" id="1" data-bs-toggle="modal" data-bs-target="#modalForm1">Sign up for free</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card pricing-card">
+                    <div class="card-body">
+                        <div class="card-title-head">
+                            <h5 class="card-title">Pro</h5>
+                        </div>
+                        <p class="card-text">$15/month</p>
+                        <ul class="list-group">
+                            <p >20 users included</p>
+                            <p >10 GB of storage</p>
+                            <p >Priority email support</p>
+                            <p >Help center access</p>
+                        </ul>
+                        <button class="btn pricing-button" id="2" data-bs-toggle="modal" data-bs-target="#modalForm1">Get started</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card pricing-card">
+                    <div class="card-body">
+                        <div class="card-title-head">
+                            <h5 class="card-title">Enterprise</h5>
+                        </div>
+                        <p class="card-text">$29/month</p>
+                        <ul class="list-group">
+                            <p >30 users included</p>
+                            <p >15 GB of storage</p>
+                            <p >Phone and email support</p>
+                            <p >Help center access</p>
+                        </ul>
+                        <button class="btn pricing-button" id="3" data-bs-toggle="modal" data-bs-target="#modalForm1">Contact us</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Add similar cards for Pro and Enterprise -->
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Modal 1 -->
+    <div class="modal fade" id="modalForm1" tabindex="-1" role="dialog" aria-labelledby="modalFormLabel1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <!-- Modal content for Free -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFormLabel1">Fill out the Free Plan form</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="name1" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name1" placeholder="Enter your name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email1" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email1" placeholder="Enter your email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="comments1" class="form-label">Order Comments</label>
+                            <textarea class="form-control" id="comments1" rows="3" placeholder="Enter your comments"></textarea>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add similar modals for Pro and Enterprise -->
+
+    <!-- Slider -->
+    <input type="range" min="0" max="40" step="1" value="0" id="priceSlider" class="form-range" />
+
+    <!-- Add this container where user cards will be displayed -->
+    <div class="container" id="userCards"></div>
+
+    <script>
+        const slider = document.getElementById("priceSlider");
+        const button1 = document.getElementById("1");
+        const button2 = document.getElementById("2");
+        const button3 = document.getElementById("3");
+
+        let userData = [];
+
+        // Function to update the button color based on the slider position
+        function updateButtonColor(sliderValue) {
+            if (sliderValue >= 10 && sliderValue < 20) {
+                // Button 2 should be outline and rest should be primary
+                button1.classList.remove("btn-outline-primary");
+                button2.classList.remove("btn-primary");
+                button3.classList.remove("btn-primary");
+                button1.classList.add("btn-primary");
+                button2.classList.add("btn-outline-primary");
+                button3.classList.add("btn-primary");
+            } else if (sliderValue >= 20) {
+                // Button 3 should be outline and rest should be primary
+                button1.classList.remove("btn-outline-primary");
+                button2.classList.remove("btn-outline-primary");
+                button3.classList.remove("btn-primary");
+                button1.classList.add("btn-primary");
+                button2.classList.add("btn-primary");
+                button3.classList.add("btn-outline-primary");
+            } else if (sliderValue < 10) {
+                // Button 1 should be outline and rest should be primary
+                button1.classList.remove("btn-primary");
+                button2.classList.remove("btn-outline-primary");
+                button3.classList.remove("btn-outline-primary");
+                button1.classList.add("btn-outline-primary");
+                button2.classList.add("btn-primary");
+                button3.classList.add("btn-primary");
+            }
+        }
+
+            // Function to make the API call and update user data
+            function fetchDataAndUpdateUserData(size) {
+                fetch(`https://random-data-api.com/api/users/random_user?size=${size}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        userData = userData.concat(data);
+                        renderUserCards(data);
+                    })
+                    .catch(error => console.error(error));
+            }
+
+            // Function to render user cards
+            function renderUserCards(data) {
+                const cardContainer = document.getElementById("userCards");
+                cardContainer.innerHTML = ""; // Clear previous cards
+
+                data.forEach(user => {
+                    const card = document.createElement("div");
+                    card.className = "card";
+                    card.innerHTML = `
+                    <div class="card-body">
+                        <h5>Name : ${user.first_name}</h5>
+                        <p>Email : ${user.email}</p>
+                        <p>Phone: ${user.phone_number}</p>
+                    </div>
+                `;
+
+                    cardContainer.appendChild(card);
+                });
+            }
+
+        // Add an event listener to the slider's input event
+        slider.addEventListener("input", function () {
+            const sliderValue = parseInt(slider.value);
+
+            // Check if the sliderValue is a multiple of 10
+            if (sliderValue % 10 === 0) {
+                // Calculate the size for the API call
+                const size = userData.length + 10;
+                fetchDataAndUpdateUserData(size);
+            }
+
+            // Update the button color based on the slider position
+            updateButtonColor(sliderValue);
+        });
+
+            // Initial update of button color and user data
+            updateButtonColor(0);
+            fetchDataAndUpdateUserData(10); // Initial fetch with size 10
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+    
+      
+      
